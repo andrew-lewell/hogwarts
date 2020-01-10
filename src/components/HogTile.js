@@ -23,8 +23,6 @@ class HogTile extends React.Component {
     );
   };
 
-  showStats = hog => {};
-
   render() {
     return (
       <div className="indexWrapper">
@@ -32,18 +30,28 @@ class HogTile extends React.Component {
           {this.props.hogs.map(hog => {
             return (
               <li className="pigTile" onClick={this.showStats}>
+                <h3>{hog.name}</h3>
                 <div className="ui card">
                   <div className="ui slide masked reveal image">
-                    <div className="visible">
-                      <h3>{hog.name}</h3>
-                      <img src={images[this.editNameForImg(hog.name)]}></img>
-                      {console.log(images)}
-                    </div>
-                    <div className="hidden">
-                      <h3>{hog.greased}</h3>
+                    <img
+                      className="visible content"
+                      src={images[this.editNameForImg(hog.name)]}
+                    />
+                    <div className="hidden content">
+                      <h4>Specialty: {hog.specialty}</h4>
+                      <h4>Weight: {hog.weight} tonnes of bacon</h4>
+                      <h4>Best finish: {hog["highest medal achieved"]}</h4>
+                      <h4>
+                        {hog.greased === true ? "Greasy Pig!" : "Clean piggy"}
+                      </h4>
                     </div>
                   </div>
                 </div>
+                <button
+                // onClick={this.props.hideHog(hog.id)}
+                >
+                  Hide hog
+                </button>
               </li>
             );
           })}

@@ -6,7 +6,7 @@ import HogContainer from "./components/HogContainer.js";
 const HOG_URL = "http://localhost:3000/hogs";
 
 class App extends Component {
-  state = { hogs: [] };
+  state = { hogs: [], greasyFilter: false, sortType: "default" };
 
   componentDidMount = () => {
     this.fetchHogs();
@@ -18,11 +18,47 @@ class App extends Component {
       .then(data => this.setState({ hogs: data }));
   };
 
+  toggleGreasyFilter = () => {
+    this.setState({
+      greasyFilter: !this.state.greasyFilter
+    });
+  };
+
+  handleSortTypeChange = event => {
+    this.setState({
+      sortType: event.target.value
+    });
+  };
+
+  sortHogs = (hogs, sortType) => {
+    if (sortType === "default") return hogs;
+
+    if (sortType === "name")
+      return hogs.sort((a, b) => a.name.localeCompare(b.name));
+
+    if (sortType === "weight") return hogs.sort((a, b) => b.weight - a.weight);
+  };
+
+  // hideHog = hogId => {
+  //   const
+  // }
+
   render() {
+    const pigsToRender = this.state.greasyFilter
+      ? this.state.hogs.filter(hog => hog.greased === true)
+      : this.state.hogs;
+
+    const sortedHogsToRender = this.sortHogs(pigsToRender, this.state.sortType);
+
     return (
       <div className="App">
-        <Nav />
-        <HogContainer hogs={this.state.hogs} />
+        <Nav
+          toggleGreasyFilter={this.toggleGreasyFilter}
+          greasyFilter={this.state.greasyFilter}
+          sortType={this.state.sortType}
+          handleSortTypeChange={this.handleSortTypeChange}
+        />
+        <HogContainer hogs={sortedHogsToRender} hideHog={this.hideHog} />
       </div>
     );
   }

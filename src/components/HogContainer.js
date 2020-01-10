@@ -3,7 +3,7 @@ import HogTile from "./HogTile.js";
 
 const HogContainer = ({ hogs }) => {
   return (
-    <div className="indexWrapper">
+    <div className="ui grid container">
       <ul>
         <HogTile hogs={hogs} />
       </ul>
